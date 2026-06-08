@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Untitled Apparel — Timeless wardrobe essentials. Quality fabrics, clean silhouettes." />
+    <title>Untitled Apparel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@300;400;500;600;700&family=Instrument+Serif:opsz@8..72&display=swap" rel="stylesheet" />
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <header class="site-header">
+      <div class="container nav-container">
+        <a href="/" class="logo" data-nav="home">
+          <img src="/logo.svg" alt="Untitled Apparel" class="logo-img" />
+        </a>
+        <nav class="nav-links">
+          <a href="/" data-nav="shop">Shop</a>
+          <a href="/about" data-nav="about">About</a>
+          <a href="/cart" class="cart-link" data-nav="cart">
+            Cart (<span id="cart-count">0</span>)
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content Area (SPA) -->
+    <main id="app" class="container"></main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2025 Untitled Apparel. <em>Wear the blank page.</em></p>
+      </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="cart-modal hidden">
+      <div class="cart-modal-content">
+        <div class="cart-header">
+          <h2>Your Cart</h2>
+          <button id="cart-close" class="btn-close">&times;</button>
+        </div>
+        <div id="cart-items"></div>
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cart-total-price">$0.00</span>
+        </div>
+        <button id="checkout-btn" class="btn btn-primary btn-full">Checkout</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

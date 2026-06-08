@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.log
+.env
+waitlist-emails.json
+orders.json
+.DS_Store

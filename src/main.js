@@ -1,0 +1,651 @@
+// ===== Product Data - "The Foundation" Collection =====
+const products = [
+  {
+    id: 1,
+    name: 'The Essential Tee',
+    category: 'Tops',
+    price: 38,
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colorways: ['White', 'Black', 'Clay', 'Navy'],
+    image: '/essential-tee.png',
+    description: 'A heavyweight crewneck tee in 230 GSM organic cotton jersey. Relaxed fit with a slightly cropped body, ribbed neckline with clean finish (no tag), set-in sleeves with dropped shoulder seam, and double-needle hem. Pre-shrunk to minimize size loss. The piece you reach for every day.',
+  },
+  {
+    id: 2,
+    name: 'The Perfect Oxford',
+    category: 'Shirts',
+    price: 78,
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colorways: ['White', 'Light Oxford Blue', 'Chambray'],
+    image: '/perfect-oxford.png',
+    description: 'A classic button-down oxford in 140 GSM organic cotton cloth. Slightly oversized relaxed silhouette, button-down collar with removable stays, box pleat at back yoke, rounded hem (longer in back), mother-of-pearl buttons, and a single chest pocket with subtle label stitch.',
+  },
+  {
+    id: 3,
+    name: 'The Straight Jean',
+    category: 'Bottoms',
+    price: 128,
+    sizes: ['28', '29', '30', '31', '32', '33', '34', '36', '38'],
+    colorways: ['Raw Indigo', 'Black'],
+    sizesNote: '30, 32, 34 inseam',
+    image: '/straight-jean.png',
+    description: 'A straight-leg jean in 14oz Japanese raw selvedge denim. Medium rise, five-pocket construction with hidden rivets, button fly with branded matte buttons, chainstitch hem (unfinished — cuff or hem to preference), and a vegetable-tanned leather patch. Will develop unique fade patterns with wear.',
+  },
+  {
+    id: 4,
+    name: 'The Relaxed Trouser',
+    category: 'Bottoms',
+    price: 98,
+    sizes: ['28', '29', '30', '31', '32', '33', '34', '36', '38'],
+    colorways: ['Khaki', 'Charcoal', 'Navy'],
+    sizesNote: '30, 32 inseam',
+    image: '/relaxed-trouser.png',
+    description: 'A pleated wide-leg trouser in 280 GSM garment-washed cotton twill. High rise with double forward pleats, wide straight leg opening, side pockets with clean finish, two welt pockets at back, belt loops, zip fly with concealed button closure, and a slightly cropped length that shows the ankle.',
+  },
+  {
+    id: 5,
+    name: 'The Heavyweight Hoodie',
+    category: 'Knitwear',
+    price: 85,
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colorways: ['Charcoal', 'Clay', 'Navy', 'Oatmeal'],
+    image: '/heavyweight-hoodie.png',
+    description: 'An oversized french terry pullover hoodie in 400 GSM organic cotton. Brushed inside for warmth, double-layer hood with no drawstring (clean front), kangaroo pocket with hidden media channel, raglan sleeves, wide 2×2 ribbed cuffs and hem, flatlock seam detailing, and pre-washed to minimize shrinkage.',
+  },
+  {
+    id: 6,
+    name: 'The Linen Shirt',
+    category: 'Shirts',
+    price: 88,
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colorways: ['Natural', 'White', 'Slate'],
+    image: '/linen-shirt.png',
+    description: 'An oversized linen button-down in 100% European flax (160 GSM). Camp collar open front, patch pocket at left chest, rounded hem, corozo nut buttons, rollable sleeves with button tab. Pre-washed stonewash finish for softness from day one.',
+  },
+  {
+    id: 7,
+    name: 'The Field Jacket',
+    category: 'Outerwear',
+    price: 148,
+    sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+    colorways: ['Khaki', 'Navy', 'Olive'],
+    image: '/field-jacket.png',
+    description: 'A lightweight cotton chore jacket in 240 GSM organic cotton canvas. Mid-length, relaxed straight fit through body, four front patch pockets (two chest, two lower), corozo nut buttons, triple-needle stitching throughout, adjustable button cuffs, and garment-dyed for unique color variation.',
+  },
+];
+
+// ===== Cart State =====
+let cart = JSON.parse(localStorage.getItem('untitled-cart') || '[]');
+
+function saveCart() {
+  localStorage.setItem('untitled-cart', JSON.stringify(cart));
+  updateCartCount();
+  renderCartItems();
+}
+
+function updateCartCount() {
+  const count = cart.reduce((sum, item) => sum + item.qty, 0);
+  const el = document.getElementById('cart-count');
+  if (el) el.textContent = count;
+}
+
+function addToCart(productId, size, color) {
+  const existing = cart.find(item => item.productId === productId && item.size === size && item.color === color);
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    cart.push({ productId, size, color, qty: 1 });
+  }
+  saveCart();
+  openCart();
+}
+
+function removeFromCart(productId, size, color) {
+  cart = cart.filter(item => !(item.productId === productId && item.size === size && item.color === color));
+  saveCart();
+}
+
+function getCartTotal() {
+  return cart.reduce((sum, item) => {
+    const product = products.find(p => p.id === item.productId);
+    return sum + (product ? product.price * item.qty : 0);
+  }, 0);
+}
+
+// ===== Cart Modal =====
+function openCart() {
+  document.getElementById('cart-modal').classList.remove('hidden');
+}
+
+function closeCart() {
+  document.getElementById('cart-modal').classList.add('hidden');
+}
+
+function renderCartItems() {
+  const container = document.getElementById('cart-items');
+  const totalEl = document.getElementById('cart-total-price');
+
+  if (cart.length === 0) {
+    container.innerHTML = '<div class="empty-state"><p>Your cart is empty. Start building your foundation.</p></div>';
+    totalEl.textContent = '$0.00';
+    return;
+  }
+
+  container.innerHTML = cart.map(item => {
+    const product = products.find(p => p.id === item.productId);
+    if (!product) return '';
+    return `
+      <div class="cart-item">
+        <div class="cart-item-image">
+          <img src="${product.image}" alt="${product.name}" loading="lazy" />
+        </div>
+        <div class="cart-item-info">
+          <h4>${product.name}</h4>
+          <div class="item-color">Color: ${item.color}</div>
+          <div class="item-size">Size: ${item.size}</div>
+          <div class="item-price">$${product.price} × ${item.qty}</div>
+          <button class="cart-item-remove" data-product-id="${product.id}" data-size="${item.size}" data-color="${item.color}">Remove</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  totalEl.textContent = `$${getCartTotal().toFixed(2)}`;
+
+  container.querySelectorAll('.cart-item-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      removeFromCart(parseInt(btn.dataset.productId), btn.dataset.size, btn.dataset.color);
+    });
+  });
+}
+
+// ===== Router (SPA) =====
+function navigateTo(path) {
+  history.pushState(null, '', path);
+  renderRoute();
+}
+
+function renderRoute() {
+  const path = window.location.pathname;
+  const app = document.getElementById('app');
+
+  if (path === '/about') {
+    renderAbout(app);
+  } else if (path.startsWith('/product/')) {
+    const id = parseInt(path.split('/product/')[1]);
+    renderProductDetail(app, id);
+  } else if (path === '/cart') {
+    openCart();
+    renderShop(app);
+  } else {
+    renderShop(app);
+  }
+}
+
+// ===== Waitlist =====
+function initWaitlistForm(container) {
+  const form = container.querySelector('#waitlist-form');
+  const emailInput = container.querySelector('#waitlist-email');
+  const statusEl = container.querySelector('#waitlist-status');
+
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+
+    // Validate
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      statusEl.textContent = 'Please enter a valid email address.';
+      statusEl.className = 'waitlist-status error';
+      emailInput.focus();
+      return;
+    }
+
+    // Track signup event
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'signup', { method: 'waitlist', email_domain: email.split('@')[1] });
+    }
+    // Basic analytics event
+    console.log('[Analytics] Waitlist signup:', email, new Date().toISOString());
+
+    // Disable form while submitting
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Signing up...';
+    statusEl.textContent = '';
+    statusEl.className = 'waitlist-status';
+
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        statusEl.textContent = 'You\'re on the list. We\'ll be in touch.';
+        statusEl.className = 'waitlist-status success';
+        emailInput.value = '';
+        submitBtn.textContent = 'Signed Up ✓';
+        submitBtn.disabled = true;
+      } else {
+        statusEl.textContent = data.error || 'Something went wrong. Try again.';
+        statusEl.className = 'waitlist-status error';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Join the Waitlist';
+      }
+    } catch (err) {
+      // Fallback: store in localStorage
+      const localEmails = JSON.parse(localStorage.getItem('untitled-waitlist') || '[]');
+      if (!localEmails.includes(email)) {
+        localEmails.push(email);
+        localStorage.setItem('untitled-waitlist', JSON.stringify(localEmails));
+      }
+      statusEl.textContent = 'You\'re on the list. We\'ll be in touch.';
+      statusEl.className = 'waitlist-status success';
+      emailInput.value = '';
+      submitBtn.textContent = 'Signed Up ✓';
+      submitBtn.disabled = true;
+      console.log('[Waitlist] Stored locally:', email);
+    }
+  });
+}
+
+// ===== Pages =====
+function renderShop(app) {
+  app.innerHTML = `
+    <section class="hero">
+      <div class="brand-tagline">Coming Soon</div>
+      <h1>The Foundation<br />is almost here.</h1>
+      <p>Seven essential pieces. Endless combinations. Be the first to know when we launch.</p>
+    </section>
+
+    <!-- Waitlist Signup -->
+    <section class="waitlist-section">
+      <div class="waitlist-card">
+        <h2 class="waitlist-heading">Get early access</h2>
+        <p class="waitlist-text">Join the waitlist for exclusive early access, a 10% launch discount, and first look at The Foundation collection.</p>
+        <form id="waitlist-form" class="waitlist-form">
+          <div class="waitlist-input-group">
+            <input
+              type="email"
+              id="waitlist-email"
+              class="waitlist-input"
+              placeholder="Enter your email"
+              required
+              autocomplete="email"
+            />
+            <button type="submit" class="btn btn-primary waitlist-btn">Join the Waitlist</button>
+          </div>
+          <div id="waitlist-status" class="waitlist-status"></div>
+        </form>
+      </div>
+    </section>
+
+    <div class="collection-hero">
+      <img src="/collection-hero.png" alt="The Foundation Collection" />
+    </div>
+    <div class="section-title">The Collection</div>
+    <div class="product-grid">
+      ${products.map(p => `
+        <div class="product-card" data-product-id="${p.id}">
+          <div class="product-card-image">
+            <img src="${p.image}" alt="${p.name}" loading="lazy" />
+          </div>
+          <div class="product-card-body">
+            <div class="category">${p.category}</div>
+            <h3>${p.name}</h3>
+            <div class="price">${p.price}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  app.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('click', () => {
+      navigateTo(`/product/${card.dataset.productId}`);
+    });
+  });
+
+  initWaitlistForm(app);
+  updateCartCount();
+}
+
+function renderProductDetail(app, id) {
+  const product = products.find(p => p.id === id);
+  if (!product) {
+    navigateTo('/');
+    return;
+  }
+
+  app.innerHTML = `
+    <a href="/" class="btn-back" data-nav-back>← Back to Shop</a>
+    <div class="product-detail">
+      <div class="product-detail-image">
+        <img src="${product.image}" alt="${product.name}" />
+      </div>
+      <div class="product-detail-info">
+        <div class="category">${product.category}</div>
+        <h1>${product.name}</h1>
+        <div class="price">$${product.price}</div>
+        <p class="description">${product.description}</p>
+        <div class="colorways-label">Available Colors</div>
+        <div class="colorways">${product.colorways.join(' · ')}</div>
+        <div class="size-selector">
+          <label>Select Size</label>
+          <div class="size-options">
+            ${product.sizes.map(size => `
+              <button class="size-btn" data-size="${size}">${size}</button>
+            `).join('')}
+          </div>
+          ${product.sizesNote ? `<div style="font-size:0.75rem;color:var(--color-text-muted);margin-top:0.5rem;">${product.sizesNote}</div>` : ''}
+        </div>
+        <button id="add-to-cart-btn" class="btn btn-primary btn-full" disabled>Select a size</button>
+      </div>
+    </div>
+  `;
+
+  let selectedSize = null;
+  let selectedColor = product.colorways[0];
+
+  app.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      app.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedSize = btn.dataset.size;
+      const addBtn = document.getElementById('add-to-cart-btn');
+      addBtn.disabled = false;
+      addBtn.textContent = `Add to Cart — $${product.price}`;
+    });
+  });
+
+  document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+    if (selectedSize) {
+      addToCart(product.id, selectedSize, selectedColor);
+    }
+  });
+}
+
+function renderAbout(app) {
+  app.innerHTML = `
+    <div class="about-page">
+      <h1>About Untitled</h1>
+      <p>Untitled Apparel was founded on a simple idea: your wardrobe should work for you, not the other way around.</p>
+      <p>We design essential pieces that live at the intersection of quality and simplicity. No logos, no gimmicks, no seasonal trends — just well-made clothing in clean silhouettes that pair with everything you already own.</p>
+      <p>Every fabric is chosen for durability and feel. Every cut is refined for fit and movement. We produce in limited drops because we'd rather make fewer things well than many things poorly.</p>
+      <p>This is clothing that earns its place in your closet.</p>
+    </div>
+  `;
+}
+
+// ===== Stripe Configuration =====
+// Uses test-mode publishable key by default — swap with your live key for production
+const STRIPE_PUBLISHABLE_KEY = 'pk_test_51J1sdfKJ2sdf3J1sdfKJ2sdf3';
+
+// ===== Payment Modal =====
+let stripeClient = null;
+let elements = null;
+
+function showPaymentModal(total) {
+  // Close cart
+  closeCart();
+
+  const app = document.getElementById('app');
+  const items = cart.map(item => {
+    const product = products.find(p => p.id === item.productId);
+    return product ? { name: product.name, qty: item.qty, price: product.price, size: item.size, color: item.color } : null;
+  }).filter(Boolean);
+
+  app.innerHTML = `
+    <div class="checkout-page">
+      <a href="/" class="btn-back" data-nav-back>← Back to Shop</a>
+      <h1 class="checkout-title">Checkout</h1>
+      <div class="checkout-layout">
+        <div class="checkout-summary">
+          <h2>Order Summary</h2>
+          ${items.map(item => `
+            <div class="checkout-item">
+              <span>${item.name} × ${item.qty}</span>
+              <span>${(item.price * item.qty).toFixed(2)}</span>
+            </div>
+          `).join('')}
+          <div class="checkout-total">
+            <strong>Total</strong>
+            <strong>${total.toFixed(2)}</strong>
+          </div>
+        </div>
+        <div class="checkout-payment">
+          <h2>Payment</h2>
+          <div id="payment-element">
+            <p class="checkout-demo-notice">Secure payment processing via Stripe.</p>
+          </div>
+          <div id="payment-message" class="payment-message"></div>
+          <button id="payment-submit" class="btn btn-primary btn-full" disabled>
+            Pay ${total.toFixed(2)}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Create payment intent
+  createPaymentIntent(items, total);
+}
+
+async function createPaymentIntent(items, total) {
+  const submitBtn = document.getElementById('payment-submit');
+  const messageEl = document.getElementById('payment-message');
+
+  try {
+    const response = await fetch('/api/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        amount: total,
+        currency: 'usd',
+        items: items.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      messageEl.textContent = data.error || 'Failed to initialize payment.';
+      messageEl.className = 'payment-message error';
+      submitBtn.disabled = true;
+      return;
+    }
+
+    // Demo mode — simulate successful payment
+    if (data.demo) {
+      messageEl.textContent = 'Demo mode — payment simulated.';
+      messageEl.className = 'payment-message success';
+      submitBtn.disabled = false;
+      submitBtn.textContent = `Complete Demo Payment — ${total.toFixed(2)}`;
+      submitBtn.onclick = () => completeDemoPayment(data.clientSecret, items, total);
+      return;
+    }
+
+    // Real Stripe mode
+    try {
+      stripeClient = Stripe(STRIPE_PUBLISHABLE_KEY);
+      elements = stripeClient.elements({ clientSecret: data.clientSecret });
+
+      const paymentElement = elements.create('payment', {
+        layout: 'tabs',
+      });
+      paymentElement.mount('#payment-element');
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = `Pay ${total.toFixed(2)}`;
+
+      submitBtn.onclick = async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Processing...';
+
+        const { error } = await stripeClient.confirmPayment({
+          elements,
+          confirmParams: {
+            return_url: window.location.origin + '/order/confirm',
+          },
+        });
+
+        if (error) {
+          messageEl.textContent = error.message;
+          messageEl.className = 'payment-message error';
+          submitBtn.disabled = false;
+          submitBtn.textContent = `Pay ${total.toFixed(2)}`;
+        }
+      };
+    } catch (err) {
+      messageEl.textContent = 'Could not load payment form. Using demo mode.';
+      messageEl.className = 'payment-message error';
+      submitBtn.disabled = false;
+      submitBtn.textContent = `Complete Demo Payment — ${total.toFixed(2)}`;
+      submitBtn.onclick = () => completeDemoPayment(data.clientSecret, items, total);
+    }
+  } catch (err) {
+    messageEl.textContent = 'Network error. Please try again.';
+    messageEl.className = 'payment-message error';
+    submitBtn.disabled = true;
+  }
+}
+
+function completeDemoPayment(clientSecret, items, total) {
+  // Store order in localStorage
+  const order = {
+    id: clientSecret,
+    amount: total,
+    items,
+    status: 'succeeded',
+    created: new Date().toISOString(),
+    payment_method: 'demo',
+  };
+  localStorage.setItem('untitled-last-order', JSON.stringify(order));
+
+  // Clear cart
+  cart = [];
+  saveCart();
+
+  // Navigate to confirmation
+  navigateTo('/order/confirm');
+}
+
+function renderOrderConfirmation(app) {
+  let order;
+  try {
+    order = JSON.parse(localStorage.getItem('untitled-last-order'));
+  } catch { order = null; }
+
+  if (!order) {
+    app.innerHTML = `<div class="empty-state"><p>No recent order found.</p><a href="/" class="btn btn-primary" data-nav="home">Continue Shopping</a></div>`;
+    return;
+  }
+
+  app.innerHTML = `
+    <div class="order-confirmation">
+      <div class="confirmation-icon">✓</div>
+      <h1>Thank you for your order</h1>
+      <p class="confirmation-subtitle">Your order has been received and is being processed.</p>
+      <div class="confirmation-details">
+        <div class="confirmation-row">
+          <span>Order ID</span>
+          <span class="order-id">${order.id}</span>
+        </div>
+        <div class="confirmation-row">
+          <span>Date</span>
+          <span>${new Date(order.created).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+        </div>
+        <div class="confirmation-row">
+          <span>Total</span>
+          <span>${order.amount.toFixed(2)}</span>
+        </div>
+        <div class="confirmation-row">
+          <span>Payment</span>
+          <span>${order.payment_method === 'demo' ? 'Demo (Test Mode)' : 'Paid via Stripe'}</span>
+        </div>
+      </div>
+      <h2 class="confirmation-items-title">Items Ordered</h2>
+      <div class="confirmation-items">
+        ${order.items.map(item => `
+          <div class="confirmation-item">
+            <span>${item.name} ${item.size ? '(' + item.size + ')' : ''} × ${item.qty}</span>
+            <span>${(item.price * item.qty).toFixed(2)}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div class="confirmation-actions">
+        <a href="/" class="btn btn-primary" data-nav="home">Continue Shopping</a>
+      </div>
+    </div>
+  `;
+}
+
+// ===== Router Update =====
+const originalRenderRoute = renderRoute;
+renderRoute = function() {
+  const path = window.location.pathname;
+  const app = document.getElementById('app');
+
+  if (path === '/about') {
+    renderAbout(app);
+  } else if (path.startsWith('/product/')) {
+    const id = parseInt(path.split('/product/')[1]);
+    renderProductDetail(app, id);
+  } else if (path === '/order/confirm') {
+    renderOrderConfirmation(app);
+  } else if (path === '/cart') {
+    openCart();
+    renderShop(app);
+  } else {
+    renderShop(app);
+  }
+};
+
+// ===== Event Listeners =====
+document.addEventListener('click', (e) => {
+  // Navigation clicks
+  const navLink = e.target.closest('[data-nav]');
+  if (navLink) {
+    e.preventDefault();
+    const target = navLink.dataset.nav;
+    if (target === 'cart') {
+      openCart();
+    } else if (target === 'home' || target === 'shop') {
+      navigateTo(navLink.getAttribute('href'));
+    }
+  }
+
+  const backBtn = e.target.closest('[data-nav-back]');
+  if (backBtn) {
+    e.preventDefault();
+    navigateTo('/');
+  }
+});
+
+window.addEventListener('popstate', renderRoute);
+document.getElementById('cart-close')?.addEventListener('click', closeCart);
+
+document.addEventListener('click', (e) => {
+  const modal = document.getElementById('cart-modal');
+  if (e.target === modal) closeCart();
+});
+
+// ===== Checkout =====
+document.getElementById('checkout-btn')?.addEventListener('click', () => {
+  if (cart.length === 0) return;
+  const total = getCartTotal();
+  showPaymentModal(total);
+});
+
+// ===== Initialize =====
+document.addEventListener('DOMContentLoaded', () => {
+  renderRoute();
+  updateCartCount();
+  renderCartItems();
+});
