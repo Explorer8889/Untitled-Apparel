@@ -998,3 +998,132 @@ body {
   color: var(--color-text);
   font-weight: 400;
 }
+
+/* ===== LOOKBOOK PAGE ===== */
+.lookbook-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+  text-align: center;
+}
+
+.lookbook-page h1 {
+  font-family: var(--font-serif);
+  font-size: 2.75rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  line-height: 1.15;
+}
+
+.lookbook-subtitle {
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+}
+
+.lookbook-grid {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.lookbook-spread {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow var(--transition);
+}
+
+.lookbook-spread:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+.lookbook-spread img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.lookbook-caption {
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+}
+
+.lookbook-caption h3 {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--color-text);
+}
+
+.lookbook-caption p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+/* ===== LEGAL PAGES ===== */
+.legal-page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+}
+
+.legal-page h1 {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.legal-date {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+}
+
+.legal-page h2 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1.75rem 0 0.75rem;
+  color: var(--color-text);
+}
+
+.legal-page p {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ===== FOOTER LINKS ===== */
+.footer-links {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.footer-links a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color var(--transition);
+}
+
+.footer-links a:hover {
+  color: var(--color-text);
+}
+
+.footer-sep {
+  color: var(--color-border);
+}
+
+/* ===== RESPONSIVE ADDITIONS ===== */
+@media (max-width: 768px) {
+  .lookbook-page h1 { font-size: 2rem; }
+  .legal-page h1 { font-size: 1.75rem; }
+}

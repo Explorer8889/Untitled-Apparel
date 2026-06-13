@@ -1,4 +1,23 @@
 // ===== Product Data - "The Foundation" Collection =====
+
+// ===== Google Analytics 4 =====
+function trackPageView(path) {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'page_view', {
+      page_path: path,
+      page_title: document.title,
+    });
+  }
+  console.log('[Analytics] Page view:', path);
+}
+
+function trackEvent(action, params = {}) {
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', action, params);
+  }
+  console.log('[Analytics] Event:', action, params);
+}
+
 const products = [
   {
     id: 1,
@@ -203,9 +222,7 @@ function initWaitlistForm(container) {
     }
 
     // Track signup event
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'signup', { method: 'waitlist', email_domain: email.split('@')[1] });
-    }
+    trackEvent('signup', { method: 'waitlist', email_domain: email.split('@')[1] });
     // Basic analytics event
     console.log('[Analytics] Waitlist signup:', email, new Date().toISOString());
 
@@ -474,6 +491,122 @@ function renderSizeGuide(app) {
   `;
 }
 
+// ===== Lookbook =====
+function renderLookbook(app) {
+  app.innerHTML = `
+    <div class="lookbook-page">
+      <h1>The Foundation</h1>
+      <p class="lookbook-subtitle">Seven pieces. Endless combinations.</p>
+
+      <div class="lookbook-grid">
+        <div class="lookbook-spread">
+          <img src="/lookbook-page-01.png" alt="The Uniform — Essential Tee, Straight Jean, Field Jacket" loading="lazy" />
+          <div class="lookbook-caption">
+            <h3>Look 1: The Uniform</h3>
+            <p>Essential Tee · Straight Jean · Field Jacket</p>
+          </div>
+        </div>
+        <div class="lookbook-spread">
+          <img src="/lookbook-page-02.png" alt="Smart Casual — Perfect Oxford, Relaxed Trouser" loading="lazy" />
+          <div class="lookbook-caption">
+            <h3>Look 2: Smart Casual</h3>
+            <p>Perfect Oxford · Relaxed Trouser</p>
+          </div>
+        </div>
+        <div class="lookbook-spread">
+          <img src="/lookbook-page-03.png" alt="Weekend — Heavyweight Hoodie, Straight Jean" loading="lazy" />
+          <div class="lookbook-caption">
+            <h3>Look 3: Weekend</h3>
+            <p>Heavyweight Hoodie · Straight Jean</p>
+          </div>
+        </div>
+        <div class="lookbook-spread">
+          <img src="/lookbook-page-04.png" alt="Summer Layers — Linen Shirt, Essential Tee, Relaxed Trouser" loading="lazy" />
+          <div class="lookbook-caption">
+            <h3>Look 4: Summer Layers</h3>
+            <p>Linen Shirt · Essential Tee · Relaxed Trouser</p>
+          </div>
+        </div>
+        <div class="lookbook-spread">
+          <img src="/lookbook-page-05.png" alt="Full Collection — Heavyweight Hoodie, Relaxed Trouser, Field Jacket" loading="lazy" />
+          <div class="lookbook-caption">
+            <h3>Look 5: Full Collection</h3>
+            <p>Heavyweight Hoodie · Relaxed Trouser · Field Jacket</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ===== Legal Pages =====
+function renderPrivacy(app) {
+  app.innerHTML = `
+    <div class="legal-page">
+      <h1>Privacy Policy</h1>
+      <p class="legal-date">Last updated: June 2025</p>
+
+      <h2>Information We Collect</h2>
+      <p>When you sign up for our waitlist or make a purchase, we collect the information you provide: name, email address, shipping address, and payment information (processed securely by Stripe).</p>
+
+      <h2>How We Use Your Information</h2>
+      <p>We use your information to process orders, send order confirmations, communicate about your purchase, and send occasional marketing emails (only with your consent). We never sell your personal information to third parties.</p>
+
+      <h2>Data Security</h2>
+      <p>We implement industry-standard security measures including SSL encryption. Payment data is handled entirely by Stripe — we never store full credit card numbers.</p>
+
+      <h2>Cookies</h2>
+      <p>We use minimal cookies for essential functionality (cart storage) and analytics (Google Analytics, anonymized). You can disable cookies in your browser settings.</p>
+
+      <h2>Contact</h2>
+      <p>For privacy-related inquiries, email us at privacy@untitledapparel.com.</p>
+    </div>
+  `;
+}
+
+function renderTerms(app) {
+  app.innerHTML = `
+    <div class="legal-page">
+      <h1>Terms of Service</h1>
+      <p class="legal-date">Last updated: June 2025</p>
+
+      <h2>General</h2>
+      <p>By using the Untitled Apparel website, you agree to these terms. We reserve the right to update these terms at any time.</p>
+
+      <h2>Products & Pricing</h2>
+      <p>All prices are in USD. We make every effort to display accurate product descriptions and pricing, but errors may occur. We reserve the right to correct any errors and cancel orders if necessary.</p>
+
+      <h2>Intellectual Property</h2>
+      <p>All content on this site — including logos, designs, product images, and text — is the property of Untitled Apparel and may not be reproduced without permission.</p>
+
+      <h2>Limitation of Liability</h2>
+      <p>Untitled Apparel is not liable for any indirect, incidental, or consequential damages arising from the use of this site or our products.</p>
+    </div>
+  `;
+}
+
+function renderShipping(app) {
+  app.innerHTML = `
+    <div class="legal-page">
+      <h1>Shipping & Returns</h1>
+      <p class="legal-date">Last updated: June 2025</p>
+
+      <h2>Shipping</h2>
+      <p>We ship within the continental United States via USPS or FedEx. Standard shipping takes 3-7 business days. Expedited options are available at checkout.</p>
+      <p>Shipping costs are calculated at checkout based on package weight and destination. Free shipping on orders over $150.</p>
+
+      <h2>Returns</h2>
+      <p>We accept returns within 30 days of delivery for unworn, unwashed items with tags attached. To initiate a return, email returns@untitledapparel.com with your order number.</p>
+
+      <h2>Refunds</h2>
+      <p>Refunds are processed within 5-7 business days of receiving your return. Shipping costs are non-refundable. Original payment method will be credited.</p>
+
+      <h2>Exchanges</h2>
+      <p>We offer free size exchanges within the US. Contact us at exchanges@untitledapparel.com to arrange an exchange.</p>
+    </div>
+  `;
+}
+
 // ===== Stripe Configuration =====
 // Uses test-mode publishable key by default — swap with your live key for production
 const STRIPE_PUBLISHABLE_KEY = 'pk_test_51J1sdfKJ2sdf3J1sdfKJ2sdf3';
@@ -684,10 +817,20 @@ renderRoute = function() {
   const path = window.location.pathname;
   const app = document.getElementById('app');
 
+  trackPageView(path);
+
   if (path === '/about') {
     renderAbout(app);
+  } else if (path === '/lookbook') {
+    renderLookbook(app);
   } else if (path === '/size-guide') {
     renderSizeGuide(app);
+  } else if (path === '/privacy') {
+    renderPrivacy(app);
+  } else if (path === '/terms') {
+    renderTerms(app);
+  } else if (path === '/shipping') {
+    renderShipping(app);
   } else if (path.startsWith('/product/')) {
     const id = parseInt(path.split('/product/')[1]);
     renderProductDetail(app, id);
