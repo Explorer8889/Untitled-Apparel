@@ -557,6 +557,115 @@ body {
   font-size: 1.05rem;
 }
 
+/* ===== SIZE GUIDE ===== */
+.size-guide-page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+}
+
+.size-guide-page h1 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  line-height: 1.15;
+}
+
+.size-guide-intro {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+.size-guide-page h2 {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 2rem 0 0.75rem;
+  color: var(--color-text);
+}
+
+.size-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 0.5rem;
+}
+
+.size-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  min-width: 500px;
+}
+
+.size-table thead th,
+.size-table thead td {
+  background: var(--color-text);
+  color: var(--color-white);
+  padding: 0.625rem 0.75rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.85rem;
+  border: 1px solid #333;
+}
+
+.size-table thead td:first-child {
+  background: var(--color-text);
+  text-align: left;
+}
+
+.size-table tbody td {
+  padding: 0.625rem 0.75rem;
+  text-align: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+}
+
+.size-table tbody td:first-child {
+  text-align: left;
+  font-weight: 500;
+  background: var(--color-bg);
+  white-space: nowrap;
+}
+
+.size-table tbody tr:nth-child(even) td:not(:first-child) {
+  background: var(--color-bg);
+}
+
+.size-guide-note {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-white);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0 4px 4px 0;
+}
+
+.size-guide-measure {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.measure-item {
+  padding: 0.75rem 1rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.measure-item strong {
+  color: var(--color-text);
+}
+
 /* ===== COLLECTION HERO BANNER ===== */
 .collection-hero {
   margin: 1rem 0 2rem;

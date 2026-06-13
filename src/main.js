@@ -382,6 +382,98 @@ function renderAbout(app) {
   `;
 }
 
+// ===== Size Guide =====
+function renderSizeGuide(app) {
+  app.innerHTML = `
+    <div class="size-guide-page">
+      <h1>Size Guide</h1>
+      <p class="size-guide-intro">Find your perfect fit. All measurements are in centimeters (cm). If you're between sizes, we recommend sizing up for a relaxed fit or down for a trimmer fit.</p>
+
+      <h2>Tops — The Essential Tee, Perfect Oxford, Linen Shirt</h2>
+      <div class="size-table-wrapper">
+        <table class="size-table">
+          <thead>
+            <tr><td>Size</td><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chest (cm)</td><td>48-52</td><td>52-56</td><td>56-60</td><td>60-64</td><td>64-68</td><td>68-72</td></tr>
+            <tr><td>Shoulder (cm)</td><td>44</td><td>47</td><td>50</td><td>53</td><td>56</td><td>59</td></tr>
+            <tr><td>Body Length (cm)</td><td>71</td><td>73.5</td><td>76</td><td>78.5</td><td>81</td><td>83.5</td></tr>
+            <tr><td>Sleeve (cm)</td><td>62</td><td>63.5</td><td>65</td><td>66.5</td><td>68</td><td>69.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="size-guide-note"><strong>Fit note:</strong> Tee runs relaxed, slightly oversized. Oxford and Linen Shirt are true to size for a relaxed silhouette.</p>
+
+      <h2>The Heavyweight Hoodie</h2>
+      <div class="size-table-wrapper">
+        <table class="size-table">
+          <thead>
+            <tr><td>Size</td><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chest (cm)</td><td>55</td><td>59</td><td>63</td><td>67</td><td>71</td><td>75</td></tr>
+            <tr><td>Body Length (cm)</td><td>66</td><td>69</td><td>72</td><td>75</td><td>78</td><td>81</td></tr>
+            <tr><td>Sleeve (cm)</td><td>78</td><td>81</td><td>84</td><td>87</td><td>90</td><td>93</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="size-guide-note"><strong>Fit note:</strong> Oversized, boxy fit. Size down for trimmer fit.</p>
+
+      <h2>The Field Jacket</h2>
+      <div class="size-table-wrapper">
+        <table class="size-table">
+          <thead>
+            <tr><td>Size</td><th>S</th><th>M</th><th>L</th><th>XL</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chest (cm)</td><td>56</td><td>60</td><td>64</td><td>68</td></tr>
+            <tr><td>Body Length (cm)</td><td>72</td><td>75</td><td>78</td><td>81</td></tr>
+            <tr><td>Sleeve (cm)</td><td>65</td><td>67</td><td>69</td><td>71</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="size-guide-note"><strong>Fit note:</strong> Relaxed fit. Can layer over hoodie. True to size.</p>
+
+      <h2>Bottoms — The Straight Jean & Relaxed Trouser</h2>
+      <div class="size-table-wrapper">
+        <table class="size-table">
+          <thead>
+            <tr><td>Waist Size</td><th>28</th><th>29</th><th>30</th><th>31</th><th>32</th><th>33</th><th>34</th><th>36</th><th>38</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Waist (cm)</td><td>36</td><td>37</td><td>38.5</td><td>40</td><td>41</td><td>42.5</td><td>44</td><td>46.5</td><td>49</td></tr>
+            <tr><td>Hip (cm)</td><td>47</td><td>48.5</td><td>50</td><td>51</td><td>52</td><td>53.5</td><td>55</td><td>57.5</td><td>60</td></tr>
+            <tr><td>Thigh (cm)</td><td>28</td><td>29</td><td>30</td><td>30.5</td><td>31</td><td>32</td><td>33</td><td>34.5</td><td>36</td></tr>
+            <tr><td>Leg Opening (cm)</td><td>17</td><td>17.5</td><td>18</td><td>18.5</td><td>19</td><td>19.5</td><td>20</td><td>21</td><td>22</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="size-guide-note"><strong>Fit note (Jean):</strong> Straight leg, medium rise, true to size. Raw denim will stretch up to 0.5" in waist. Inseam: 30", 32", or 34".<br />
+      <strong>Fit note (Trouser):</strong> High rise, wide-leg. True to size. Inseam: 30" or 32".</p>
+
+      <h2>How to Measure</h2>
+      <div class="size-guide-measure">
+        <div class="measure-item">
+          <strong>Chest:</strong> Measure around the fullest part of your chest, keeping the tape horizontal.
+        </div>
+        <div class="measure-item">
+          <strong>Waist:</strong> Measure around your natural waistline (just above the belly button).
+        </div>
+        <div class="measure-item">
+          <strong>Hip:</strong> Measure around the widest part of your hips.
+        </div>
+        <div class="measure-item">
+          <strong>Inseam:</strong> Measure from the crotch seam to the bottom of the ankle, along the inside of the leg.
+        </div>
+        <div class="measure-item">
+          <strong>Sleeve:</strong> With arm slightly bent, measure from the center back of the neck to the wrist.
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 // ===== Stripe Configuration =====
 // Uses test-mode publishable key by default — swap with your live key for production
 const STRIPE_PUBLISHABLE_KEY = 'pk_test_51J1sdfKJ2sdf3J1sdfKJ2sdf3';
@@ -594,6 +686,8 @@ renderRoute = function() {
 
   if (path === '/about') {
     renderAbout(app);
+  } else if (path === '/size-guide') {
+    renderSizeGuide(app);
   } else if (path.startsWith('/product/')) {
     const id = parseInt(path.split('/product/')[1]);
     renderProductDetail(app, id);

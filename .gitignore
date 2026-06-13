@@ -5,3 +5,4 @@ dist/
 waitlist-emails.json
 orders.json
 .DS_Store
+.vercel
