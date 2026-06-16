@@ -853,7 +853,7 @@ document.addEventListener('click', (e) => {
     const target = navLink.dataset.nav;
     if (target === 'cart') {
       openCart();
-    } else if (target === 'home' || target === 'shop') {
+    } else {
       navigateTo(navLink.getAttribute('href'));
     }
   }
