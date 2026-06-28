@@ -1,3 +1,9 @@
+// ===== Vercel Web Analytics =====
+import { inject } from '@vercel/analytics';
+
+// Initialize Vercel Web Analytics
+inject();
+
 // ===== Product Data - "The Foundation" Collection =====
 
 // ===== Google Analytics 4 =====
