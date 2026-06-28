@@ -4,6 +4,12 @@ import { inject } from '@vercel/analytics';
 // Initialize Vercel Web Analytics
 inject();
 
+// ===== Vercel Speed Insights =====
+import { injectSpeedInsights } from '@vercel/speed-insights';
+
+// Initialize Vercel Speed Insights
+injectSpeedInsights();
+
 // ===== Product Data - "The Foundation" Collection =====
 
 // ===== Google Analytics 4 =====
