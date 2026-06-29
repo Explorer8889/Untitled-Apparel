@@ -235,11 +235,33 @@ body {
   overflow: hidden;
 }
 
-.product-detail-image img {
+.product-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.product-image-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.color-name-label {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text);
+  letter-spacing: 0.03em;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--color-border);
 }
 
 .product-detail-info h1 {
@@ -278,62 +300,61 @@ body {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   color: var(--color-text-muted);
   font-weight: 500;
+}
+
+.color-swatches {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.color-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  position: relative;
+  transition: transform var(--transition), box-shadow var(--transition);
+  padding: 0;
+  outline: none;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.color-swatch.active {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-accent);
+}
+
+.color-swatch-tooltip {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+
+.color-swatch:hover .color-swatch-tooltip {
+  opacity: 1;
 }
 
 .product-detail-info .colorways {
   font-size: 0.9rem;
   color: var(--color-text-muted);
   margin-bottom: 1.5rem;
-}
-
-.size-selector {
-  margin-bottom: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.size-selector label {
-  display: block;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.75rem;
-  color: var(--color-text-muted);
-  font-weight: 500;
-}
-
-.size-options {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.size-btn {
-  width: 48px;
-  height: 48px;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  background: var(--color-white);
-  cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: all var(--transition);
-  color: var(--color-text);
-}
-
-.size-btn:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-.size-btn.active {
-  border-color: var(--color-accent);
-  background: var(--color-accent);
-  color: var(--color-white);
 }
 
 /* ===== BUTTONS ===== */
@@ -780,6 +801,99 @@ body {
   }
   .waitlist-btn {
     width: 100%;
+  }
+}
+
+
+/* ===== WAITLIST MODAL ===== */
+.waitlist-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.waitlist-modal-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.waitlist-modal-content {
+  background: var(--color-white);
+  border-radius: 12px;
+  max-width: 480px;
+  width: 90%;
+  position: relative;
+  animation: slideUpModal 0.4s ease;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+.waitlist-modal-overlay.hidden .waitlist-modal-content {
+  animation: none;
+}
+
+.waitlist-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background var(--transition), color var(--transition);
+  font-family: var(--font-sans);
+  z-index: 2;
+}
+
+.waitlist-modal-close:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.waitlist-modal-body {
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+@keyframes slideUpModal {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .waitlist-modal-body {
+    padding: 2rem 1.25rem;
+  }
+  .waitlist-modal-content {
+    width: 95%;
+  }
+  .color-swatches {
+    gap: 0.5rem;
+  }
+  .color-swatch {
+    width: 32px;
+    height: 32px;
   }
 }
 
