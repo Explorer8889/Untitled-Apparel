@@ -116,7 +116,7 @@ const products = [
     sizes: ['28', '29', '30', '31', '32', '33', '34', '36', '38'],
     colorways: ['Khaki', 'Charcoal', 'Navy'],
     sizesNote: '30, 32 inseam',
-    image: '/relaxed-trouser.png',
+    image: '/relaxed-trouser-khaki.png',
     images: {
       'Khaki': '/relaxed-trouser-khaki.png',
       'Charcoal': '/relaxed-trouser-charcoal.png',
