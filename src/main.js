@@ -18,6 +18,49 @@ function trackEvent(action, params = {}) {
   console.log('[Analytics] Event:', action, params);
 }
 
+// ===== Color Helpers =====
+function colorToSlug(color) {
+  return color.toLowerCase().replace(/\s+/g, '-');
+}
+
+const productSlugs = {
+  1: 'essential-tee',
+  2: 'perfect-oxford',
+  3: 'straight-jean',
+  4: 'relaxed-trouser',
+  5: 'heavyweight-hoodie',
+  6: 'linen-shirt',
+  7: 'field-jacket',
+};
+
+function getProductImage(productId, color) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return '';
+  if (color && product.images && product.images[color]) {
+    return product.images[color];
+  }
+  return product.image;
+}
+
+function colorToSwatchHex(color) {
+  const map = {
+    'White': '#FFFFFF',
+    'Black': '#1C1C1C',
+    'Clay': '#C5694A',
+    'Navy': '#1B2838',
+    'Light Oxford Blue': '#6B8EBA',
+    'Chambray': '#A9B8C9',
+    'Raw Indigo': '#2F3E4E',
+    'Khaki': '#C3B091',
+    'Charcoal': '#4A4A4A',
+    'Oatmeal': '#E8DCC8',
+    'Natural': '#F4F1EA',
+    'Slate': '#708090',
+    'Olive': '#6B7E5A',
+  };
+  return map[color] || '#B8B2A6';
+}
+
 const products = [
   {
     id: 1,
@@ -27,6 +70,12 @@ const products = [
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     colorways: ['White', 'Black', 'Clay', 'Navy'],
     image: '/essential-tee.png',
+    images: {
+      'White': '/essential-tee-white.png',
+      'Black': '/essential-tee-black.png',
+      'Clay': '/essential-tee-clay.png',
+      'Navy': '/essential-tee-navy.png',
+    },
     description: 'A heavyweight crewneck tee in 230 GSM organic cotton jersey. Relaxed fit with a slightly cropped body, ribbed neckline with clean finish (no tag), set-in sleeves with dropped shoulder seam, and double-needle hem. Pre-shrunk to minimize size loss. The piece you reach for every day.',
   },
   {
@@ -37,6 +86,11 @@ const products = [
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     colorways: ['White', 'Light Oxford Blue', 'Chambray'],
     image: '/perfect-oxford.png',
+    images: {
+      'White': '/perfect-oxford-white.png',
+      'Light Oxford Blue': '/perfect-oxford-light-oxford-blue.png',
+      'Chambray': '/perfect-oxford-chambray.png',
+    },
     description: 'A classic button-down oxford in 140 GSM organic cotton cloth. Slightly oversized relaxed silhouette, button-down collar with removable stays, box pleat at back yoke, rounded hem (longer in back), mother-of-pearl buttons, and a single chest pocket with subtle label stitch.',
   },
   {
@@ -48,6 +102,10 @@ const products = [
     colorways: ['Raw Indigo', 'Black'],
     sizesNote: '30, 32, 34 inseam',
     image: '/straight-jean.png',
+    images: {
+      'Raw Indigo': '/straight-jean-raw-indigo.png',
+      'Black': '/straight-jean-black.png',
+    },
     description: 'A straight-leg jean in 14oz Japanese raw selvedge denim. Medium rise, five-pocket construction with hidden rivets, button fly with branded matte buttons, chainstitch hem (unfinished — cuff or hem to preference), and a vegetable-tanned leather patch. Will develop unique fade patterns with wear.',
   },
   {
@@ -59,6 +117,11 @@ const products = [
     colorways: ['Khaki', 'Charcoal', 'Navy'],
     sizesNote: '30, 32 inseam',
     image: '/relaxed-trouser.png',
+    images: {
+      'Khaki': '/relaxed-trouser-khaki.png',
+      'Charcoal': '/relaxed-trouser-charcoal.png',
+      'Navy': '/relaxed-trouser-navy.png',
+    },
     description: 'A pleated wide-leg trouser in 280 GSM garment-washed cotton twill. High rise with double forward pleats, wide straight leg opening, side pockets with clean finish, two welt pockets at back, belt loops, zip fly with concealed button closure, and a slightly cropped length that shows the ankle.',
   },
   {
@@ -69,6 +132,12 @@ const products = [
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     colorways: ['Charcoal', 'Clay', 'Navy', 'Oatmeal'],
     image: '/heavyweight-hoodie.png',
+    images: {
+      'Charcoal': '/heavyweight-hoodie-charcoal.png',
+      'Clay': '/heavyweight-hoodie-clay.png',
+      'Navy': '/heavyweight-hoodie-navy.png',
+      'Oatmeal': '/heavyweight-hoodie-oatmeal.png',
+    },
     description: 'An oversized french terry pullover hoodie in 400 GSM organic cotton. Brushed inside for warmth, double-layer hood with no drawstring (clean front), kangaroo pocket with hidden media channel, raglan sleeves, wide 2×2 ribbed cuffs and hem, flatlock seam detailing, and pre-washed to minimize shrinkage.',
   },
   {
@@ -79,6 +148,11 @@ const products = [
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     colorways: ['Natural', 'White', 'Slate'],
     image: '/linen-shirt.png',
+    images: {
+      'Natural': '/linen-shirt-natural.png',
+      'White': '/linen-shirt-white.png',
+      'Slate': '/linen-shirt-slate.png',
+    },
     description: 'An oversized linen button-down in 100% European flax (160 GSM). Camp collar open front, patch pocket at left chest, rounded hem, corozo nut buttons, rollable sleeves with button tab. Pre-washed stonewash finish for softness from day one.',
   },
   {
@@ -89,6 +163,11 @@ const products = [
     sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
     colorways: ['Khaki', 'Navy', 'Olive'],
     image: '/field-jacket.png',
+    images: {
+      'Khaki': '/field-jacket-khaki.png',
+      'Navy': '/field-jacket-navy.png',
+      'Olive': '/field-jacket-olive.png',
+    },
     description: 'A lightweight cotton chore jacket in 240 GSM organic cotton canvas. Mid-length, relaxed straight fit through body, four front patch pockets (two chest, two lower), corozo nut buttons, triple-needle stitching throughout, adjustable button cuffs, and garment-dyed for unique color variation.',
   },
 ];
@@ -153,10 +232,11 @@ function renderCartItems() {
   container.innerHTML = cart.map(item => {
     const product = products.find(p => p.id === item.productId);
     if (!product) return '';
+    const itemImage = getProductImage(item.productId, item.color);
     return `
       <div class="cart-item">
         <div class="cart-item-image">
-          <img src="${product.image}" alt="${product.name}" loading="lazy" />
+          <img src="${itemImage}" alt="${product.name} — ${item.color}" loading="lazy" />
         </div>
         <div class="cart-item-info">
           <h4>${product.name}</h4>
@@ -248,6 +328,10 @@ function initWaitlistForm(container) {
         emailInput.value = '';
         submitBtn.textContent = 'Signed Up ✓';
         submitBtn.disabled = true;
+        // Mark signed up in localStorage
+        localStorage.setItem('untitled-waitlist-signed-up', 'true');
+        // Close modal after a short delay
+        setTimeout(() => closeWaitlistModal(), 2000);
       } else {
         statusEl.textContent = data.error || 'Something went wrong. Try again.';
         statusEl.className = 'waitlist-status error';
@@ -266,9 +350,56 @@ function initWaitlistForm(container) {
       emailInput.value = '';
       submitBtn.textContent = 'Signed Up ✓';
       submitBtn.disabled = true;
+      localStorage.setItem('untitled-waitlist-signed-up', 'true');
       console.log('[Waitlist] Stored locally:', email);
+      // Close modal after a short delay
+      setTimeout(() => closeWaitlistModal(), 2000);
     }
   });
+}
+
+// ===== Waitlist Modal =====
+let waitlistModalTimer = null;
+
+function showWaitlistModal() {
+  const modal = document.getElementById('waitlist-modal');
+  if (!modal) return;
+  // Don't show if already signed up or dismissed
+  if (localStorage.getItem('untitled-waitlist-dismissed') === 'true') return;
+  if (localStorage.getItem('untitled-waitlist-signed-up') === 'true') return;
+  // Remove hidden class to trigger entrance animation
+  modal.classList.remove('hidden');
+  // Init form inside modal
+  initWaitlistForm(modal);
+}
+
+function closeWaitlistModal() {
+  const modal = document.getElementById('waitlist-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+  localStorage.setItem('untitled-waitlist-dismissed', 'true');
+}
+
+function initWaitlistModal() {
+  // Show modal after 3 seconds delay
+  waitlistModalTimer = setTimeout(showWaitlistModal, 3000);
+
+  // Dismiss on X click
+  const closeBtn = document.getElementById('waitlist-modal-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeWaitlistModal);
+  }
+
+  // Dismiss on overlay click
+  const modal = document.getElementById('waitlist-modal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeWaitlistModal();
+      }
+    });
+  }
 }
 
 // ===== Pages =====
@@ -278,28 +409,6 @@ function renderShop(app) {
       <div class="brand-tagline">Coming Soon</div>
       <h1>The Foundation<br />is almost here.</h1>
       <p>Seven essential pieces. Endless combinations. Be the first to know when we launch.</p>
-    </section>
-
-    <!-- Waitlist Signup -->
-    <section class="waitlist-section">
-      <div class="waitlist-card">
-        <h2 class="waitlist-heading">Get early access</h2>
-        <p class="waitlist-text">Join the waitlist for exclusive early access, a 10% launch discount, and first look at The Foundation collection.</p>
-        <form id="waitlist-form" class="waitlist-form">
-          <div class="waitlist-input-group">
-            <input
-              type="email"
-              id="waitlist-email"
-              class="waitlist-input"
-              placeholder="Enter your email"
-              required
-              autocomplete="email"
-            />
-            <button type="submit" class="btn btn-primary waitlist-btn">Join the Waitlist</button>
-          </div>
-          <div id="waitlist-status" class="waitlist-status"></div>
-        </form>
-      </div>
     </section>
 
     <div class="collection-hero">
@@ -328,7 +437,6 @@ function renderShop(app) {
     });
   });
 
-  initWaitlistForm(app);
   updateCartCount();
 }
 
@@ -339,19 +447,34 @@ function renderProductDetail(app, id) {
     return;
   }
 
+  const defaultColor = product.colorways[0];
+  const defaultImage = getProductImage(product.id, defaultColor);
+
   app.innerHTML = `
     <a href="/" class="btn-back" data-nav-back>← Back to Shop</a>
     <div class="product-detail">
       <div class="product-detail-image">
-        <img src="${product.image}" alt="${product.name}" />
+        <div class="product-image-wrapper">
+          <img id="detail-main-image" src="${defaultImage}" alt="${product.name} — ${defaultColor}" />
+          <span id="detail-color-label" class="color-name-label">${defaultColor}</span>
+        </div>
       </div>
       <div class="product-detail-info">
         <div class="category">${product.category}</div>
         <h1>${product.name}</h1>
         <div class="price">$${product.price}</div>
         <p class="description">${product.description}</p>
-        <div class="colorways-label">Available Colors</div>
-        <div class="colorways">${product.colorways.join(' · ')}</div>
+        <div class="colorways-label">Color</div>
+        <div class="color-swatches" id="color-swatches">
+          ${product.colorways.map((color, i) => {
+            const swatchColor = colorToSwatchHex(color);
+            return `
+              <button class="color-swatch ${i === 0 ? 'active' : ''}" data-color="${color}" style="background-color: ${swatchColor};${swatchColor === '#FFFFFF' || swatchColor === '#F4F1EA' || swatchColor === '#F5F5DC' ? ' border: 2px solid #B8B2A6;' : ''}" title="${color}">
+                <span class="color-swatch-tooltip">${color}</span>
+              </button>
+            `;
+          }).join('')}
+        </div>
         <div class="size-selector">
           <label>Select Size</label>
           <div class="size-options">
@@ -368,6 +491,26 @@ function renderProductDetail(app, id) {
 
   let selectedSize = null;
   let selectedColor = product.colorways[0];
+
+  // Color swatch clicks
+  app.querySelectorAll('.color-swatch').forEach(btn => {
+    btn.addEventListener('click', () => {
+      app.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedColor = btn.dataset.color;
+      const newImage = getProductImage(product.id, selectedColor);
+      const mainImg = document.getElementById('detail-main-image');
+      mainImg.src = newImage;
+      mainImg.alt = `${product.name} — ${selectedColor}`;
+      document.getElementById('detail-color-label').textContent = selectedColor;
+      // Reset size selection when changing color
+      selectedSize = null;
+      app.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      const addBtn = document.getElementById('add-to-cart-btn');
+      addBtn.disabled = true;
+      addBtn.textContent = 'Select a size';
+    });
+  });
 
   app.querySelectorAll('.size-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -885,4 +1028,5 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRoute();
   updateCartCount();
   renderCartItems();
+  initWaitlistModal();
 });

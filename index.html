@@ -98,6 +98,31 @@
       </div>
     </div>
 
+    <!-- Waitlist Popup Modal -->
+    <div id="waitlist-modal" class="waitlist-modal-overlay hidden">
+      <div class="waitlist-modal-content">
+        <button id="waitlist-modal-close" class="waitlist-modal-close">&times;</button>
+        <div class="waitlist-modal-body">
+          <h2 class="waitlist-heading">Get early access</h2>
+          <p class="waitlist-text">Join the waitlist for exclusive early access, a 10% launch discount, and first look at The Foundation collection.</p>
+          <form id="waitlist-form" class="waitlist-form">
+            <div class="waitlist-input-group">
+              <input
+                type="email"
+                id="waitlist-email"
+                class="waitlist-input"
+                placeholder="Enter your email"
+                required
+                autocomplete="email"
+              />
+              <button type="submit" class="btn btn-primary waitlist-btn">Join the Waitlist</button>
+            </div>
+            <div id="waitlist-status" class="waitlist-status"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
